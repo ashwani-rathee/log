@@ -9,14 +9,14 @@
 
   <channel>
     <title>
-      <![CDATA[  Franklin Template  ]]>
+      <![CDATA[  Blog  ]]>
     </title>
-    <link> https://tlienart.github.io/FranklinTemplates.jl/ </link>
+    <link> bloh.ashwanirathee.com </link>
     <description>
-      <![CDATA[  Example website using Franklin  ]]>
+      <![CDATA[  Ashwani Rathee&#39;s Blog  ]]>
     </description>
     <atom:link
-      href="https://tlienart.github.io/FranklinTemplates.jl/feed.xml"
+      href="bloh.ashwanirathee.com/feed.xml"
       rel="self"
       type="application/rss+xml" />
 
@@ -35,7 +35,7 @@
   
   
   <atom:author>
-    <atom:name>Septimia Zenobia</atom:name>
+    <atom:name>Ashwani Rathee</atom:name>
   </atom:author>
         
 </item>
