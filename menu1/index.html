@@ -1,43 +1,33 @@
-<!doctype html> <html lang=en > <meta charset=UTF-8 > <meta name=viewport  content="width=device-width, initial-scale=1"> <link rel=stylesheet  href="/libs/highlight/styles/github.min.css"> <link rel=stylesheet  href="/css/jtd.css"> <link rel=icon  href="/assets/favicon.ico"> <style> /* #148 wrap long header */ .franklin-content a.header-anchor, .franklin-toc li a { word-wrap: break-word; white-space: normal; } </style> <title>Code blocks</title> <div class=page-wrap > <div class=side-bar > <div class=header > <a href="/" class=title > Blog </a> </div> <label for=show-menu  class=show-menu >MENU</label> <input type=checkbox  id=show-menu  role=button > <div class=menu  id=side-menu > <ul class=menu-list > <li class="menu-list-item "><a href="/" class="menu-list-link ">Home</a> <li class="menu-list-item active"><a href="/menu1/" class="menu-list-link active">Code blocks</a> <li class="menu-list-item "><a href="/menu2/" class="menu-list-link ">More goodies</a> <li class="menu-list-item "><a href="/menu3/" class="menu-list-link ">Tags</a> <ul class="menu-list-child-list "> <li class="menu-list-item "><a href="#" class=menu-list-link >Submenu</a> </ul> </ul> </div> <div class=footer > </div> </div> <div class=main-content-wrap > <div class=main-content > <div class=main-header > <a id=github  href="//github.com/ashwani-rathee">GitHub</a> </div> <div class=franklin-content > <h1 id=working_with_code_blocks ><a href="#working_with_code_blocks" class=header-anchor >Working with code blocks</a></h1> <pre><code class="julia-repl hljs"><span class="hljs-meta prompt_">julia&gt;</span><span class=language-julia > <span class=hljs-keyword >using</span> Symbolics
+<!doctype html> <html lang=en > <meta charset=UTF-8 > <meta name=viewport  content="width=device-width, initial-scale=1"> <link rel=stylesheet  href="/libs/highlight/styles/github.min.css"> <link rel=stylesheet  href="/css/jtd.css"> <link rel=icon  href="/assets/favicon.ico"> <style> /* #148 wrap long header */ .franklin-content a.header-anchor, .franklin-toc li a { word-wrap: break-word; white-space: normal; } </style> <title>Code blocks</title> <div class=page-wrap > <div class=side-bar > <div class=header > <a href="/" class=title > Blog </a> </div> <label for=show-menu  class=show-menu >MENU</label> <input type=checkbox  id=show-menu  role=button > <div class=menu  id=side-menu > <ul class=menu-list > <li class="menu-list-item "><a href="/" class="menu-list-link ">Home</a> <li class="menu-list-item active"><a href="/menu1/" class="menu-list-link active">Code blocks</a> <li class="menu-list-item "><a href="/menu2/" class="menu-list-link ">More goodies</a> <li class="menu-list-item "><a href="/menu3/" class="menu-list-link ">Tags</a> <ul class="menu-list-child-list "> <li class="menu-list-item "><a href="#" class=menu-list-link >Submenu</a> </ul> </ul> </div> <div class=footer > </div> </div> <div class=main-content-wrap > <div class=main-content > <div class=main-header > <a id=github  href="//github.com/ashwani-rathee">GitHub</a> </div> <div class=franklin-content > <h1 id=problem_solving_symbolically ><a href="#problem_solving_symbolically" class=header-anchor >Problem Solving Symbolically</a></h1> <div class=franklin-toc ><ol><li><a href="#example_1">Example 1</a><ol><li><a href="#solution">Solution</a></ol><li><a href="#example_2">Example 2</a></ol></div> <h3 id=example_1 ><a href="#example_1" class=header-anchor >Example 1</a></h3> <p>Dobby cliff dived from 250 ft high cliff. What&#39;s the instanteous speed at t &#61; 2 and average speed during first 3 seconds of the fall?</p> <h5 id=solution ><a href="#solution" class=header-anchor >Solution</a></h5> <p>Assuming free fall under gravity with no initial velocity, it will fall <code>y &#61; 0.5 * g * t^2</code> in t sec from initial position.</p> <pre><code class="julia-repl hljs"><span class="hljs-meta prompt_">julia&gt;</span><span class=language-julia > <span class=hljs-keyword >using</span> Symbolics
 </span>
-<span class="hljs-meta prompt_">julia&gt;</span><span class=language-julia > <span class=hljs-meta >@variables</span> t x y
+<span class="hljs-meta prompt_">julia&gt;</span><span class=language-julia > <span class=hljs-meta >@variables</span> t y g
 </span>3-element Vector{Symbolics.Num}:
  t
- x
  y
+ g
 
 <span class="hljs-meta prompt_">julia&gt;</span><span class=language-julia > D = Differential(t)
 </span>(::Symbolics.Differential) (generic function with 3 methods)
 
-<span class="hljs-meta prompt_">julia&gt;</span><span class=language-julia > z = t + t^<span class=hljs-number >2</span>
-</span>t + t^2
+<span class="hljs-meta prompt_">julia&gt;</span><span class=language-julia > y = <span class=hljs-number >0.5</span> * g * t^<span class=hljs-number >2</span>
+</span>0.5g*(t^2)
 
-<span class="hljs-meta prompt_">julia&gt;</span><span class=language-julia > D(z) <span class=hljs-comment ># symbolic representation of derivative(t + t^2, t)</span>
-</span>Differential(t)(t + t^2)
+<span class="hljs-meta prompt_">julia&gt;</span><span class=language-julia > yₜ = expand_derivatives(D(y)) <span class=hljs-comment ># getting derivative</span>
+</span>g*t
 
-<span class="hljs-meta prompt_">julia&gt;</span><span class=language-julia > expand_derivatives(D(z))
-</span>1 + 2t
+<span class="hljs-meta prompt_">julia&gt;</span><span class=language-julia > speed_at_t2 = simplify(substitute(yₜ, <span class=hljs-built_in >Dict</span>(g =&gt; <span class=hljs-number >9.8</span>, t=&gt; <span class=hljs-number >3</span>))) <span class=hljs-comment ># assume the free fall on earth</span>
+</span>29.400000000000002
+</code></pre> <p>Average Speed will distance covered in the first 3 seconds of the fall, so </p> <pre><code class="julia-repl hljs"><span class="hljs-meta prompt_">julia&gt;</span><span class=language-julia > <span class=hljs-keyword >function</span> average_speed1(y2, y1, t2, t1)
+</span>     Symbolics.value((y2 - y1) / 3)
+end
+average_speed1 (generic function with 1 method)
 
-<span class="hljs-meta prompt_">julia&gt;</span><span class=language-julia > 
-</span>
-<span class="hljs-meta prompt_">julia&gt;</span><span class=language-julia > Symbolics.jacobian([x + x*y, x^<span class=hljs-number >2</span> + y],[x, y])
-</span>2×2 Matrix{Symbolics.Num}:
- 1 + y  x
-    2x  1
+<span class="hljs-meta prompt_">julia&gt;</span><span class=language-julia > yₜ₌₃ = substitute(y, <span class=hljs-built_in >Dict</span>(g =&gt; <span class=hljs-number >9.8</span>, t =&gt; <span class=hljs-number >3</span>))
+</span>44.1
 
-<span class="hljs-meta prompt_">julia&gt;</span><span class=language-julia > B = simplify.([t^<span class=hljs-number >2</span> + t + t^<span class=hljs-number >2</span>  <span class=hljs-number >2</span>t + <span class=hljs-number >4</span>t
-                  x + y + y + <span class=hljs-number >2</span>t  x^<span class=hljs-number >2</span> - x^<span class=hljs-number >2</span> + y^<span class=hljs-number >2</span>])
-</span>2×2 Matrix{Symbolics.Num}:
-   t + 2(t^2)   6t
- 2(t + y) + x  y^2
+<span class="hljs-meta prompt_">julia&gt;</span><span class=language-julia > yₜ₌₀ = substitute(y, <span class=hljs-built_in >Dict</span>(g =&gt; <span class=hljs-number >9.8</span>, t =&gt; <span class=hljs-number >0</span>))
+</span>0.0
 
-<span class="hljs-meta prompt_">julia&gt;</span><span class=language-julia > simplify.(substitute.(B, (<span class=hljs-built_in >Dict</span>(x =&gt; y^<span class=hljs-number >2</span>),)))
-</span>2×2 Matrix{Symbolics.Num}:
-     t + 2(t^2)   6t
- 2(t + y) + y^2  y^2
-
-<span class="hljs-meta prompt_">julia&gt;</span><span class=language-julia > substitute.(B, (<span class=hljs-built_in >Dict</span>(x =&gt; <span class=hljs-number >2.0</span>, y =&gt; <span class=hljs-number >3.0</span>, t =&gt; <span class=hljs-number >4.0</span>),))
-</span>2×2 Matrix{Symbolics.Num}:
- 36.0  24.0
- 16.0   9.0
-</code></pre> <div class=page-foot > Last modified: April 17, 2024. </div> </div> </div> </div> </div> <!-- end of class page-wrap--> <script src="/libs/highlight/highlight.min.js"></script> <script>hljs.highlightAll();hljs.configure({tabReplace: ' '});</script>
+<span class="hljs-meta prompt_">julia&gt;</span><span class=language-julia > averagespeed_till_t3 = average_speed1( yₜ₌₃, yₜ₌₀, <span class=hljs-number >3</span>, <span class=hljs-number >0</span>)
+</span>14.700000000000001
+</code></pre> <p><hr /> </p> <h3 id=example_2 ><a href="#example_2" class=header-anchor >Example 2</a></h3> <hr /> <div class=page-foot > Last modified: April 17, 2024. </div> </div> </div> </div> </div> <!-- end of class page-wrap--> <script src="/libs/highlight/highlight.min.js"></script> <script>hljs.highlightAll();hljs.configure({tabReplace: ' '});</script>
