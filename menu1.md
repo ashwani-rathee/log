@@ -8,31 +8,49 @@ tags = ["syntax", "code"]
 +++
 
 
-# Working with code blocks
+# Problem Solving Symbolically
 
 \toc
 
+### Example 1
+
+Dobby cliff dived from 250 ft high cliff. What's the instanteous speed at t = 2 and average speed during first 3 seconds of the fall?
+
+##### Solution
+
+Assuming free fall under gravity with no initial velocity, it will fall 
+`y = 0.5 * g * t^2`
+in t sec from initial position.
 ```>
 using Symbolics
 
-@variables t x y
+@variables t y g
 
 D = Differential(t)
 
-z = t + t^2
+y = 0.5 * g * t^2
 
-D(z) # symbolic representation of derivative(t + t^2, t)
+yₜ = expand_derivatives(D(y)) # getting derivative
 
-expand_derivatives(D(z))
- 
-Symbolics.jacobian([x + x*y, x^2 + y],[x, y])
-
-B = simplify.([t^2 + t + t^2  2t + 4t
-                  x + y + y + 2t  x^2 - x^2 + y^2])
-
-simplify.(substitute.(B, (Dict(x => y^2),)))
-
-substitute.(B, (Dict(x => 2.0, y => 3.0, t => 4.0),))
+speed_at_t2 = simplify(substitute(yₜ, Dict(g => 9.8, t=> 3))) # assume the free fall on earth
 
 ```
+
+Average Speed will distance covered in the first 3 seconds of the fall, so 
+```>
+function average_speed1(y2, y1, t2, t1)
+     Symbolics.value((y2 - y1) / 3)
+end
+
+yₜ₌₃ = substitute(y, Dict(g => 9.8, t => 3))
+yₜ₌₀ = substitute(y, Dict(g => 9.8, t => 0))
+
+averagespeed_till_t3 = average_speed1( yₜ₌₃, yₜ₌₀, 3, 0)
+
+```
+
+--- 
+### Example 2
+
+---
 
